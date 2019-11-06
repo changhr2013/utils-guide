@@ -12,7 +12,7 @@ public class ComputeCallable implements Callable<Integer> {
     public Integer call() throws Exception {
         System.out.println("当前线程为：" + Thread.currentThread().getName());
         int result = 0;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100000000; i++) {
             result += i;
         }
         return result;

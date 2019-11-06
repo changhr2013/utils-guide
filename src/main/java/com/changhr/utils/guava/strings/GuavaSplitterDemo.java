@@ -5,6 +5,7 @@ import com.google.common.base.Splitter;
 import java.util.List;
 
 /**
+ * 分词器
  * @author changhr
  * @create 2019-07-30 14:24
  */

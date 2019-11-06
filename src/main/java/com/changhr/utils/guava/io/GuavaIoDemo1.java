@@ -22,7 +22,6 @@ public class GuavaIoDemo1 {
 
     public static void main(String[] args) throws IOException {
 
-
         URL url = GuavaIoDemo1.class.getClassLoader().getResource("test.txt");
         System.out.println(url.getPath());
         File file = new File("C:\\Users\\m4000e\\Desktop\\utils-guide\\src\\main\\resources\\test.txt");

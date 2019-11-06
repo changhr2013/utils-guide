@@ -5,6 +5,8 @@ import com.google.common.util.concurrent.*;
 import org.apache.commons.lang3.time.StopWatch;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -20,35 +22,50 @@ public class ListenableFutureDemo1 {
 
         ConcurrentMap<String, Integer> resultMap = Maps.newConcurrentMap();
 
+        ListeningExecutorService service = MoreExecutors.listeningDecorator(new ThreadPoolExecutor(8, 16,
+                0L, TimeUnit.SECONDS,
+                new LinkedBlockingDeque<>(256),
+                new ThreadFactoryBuilder().setNameFormat("work-thread-%d").build()));
+
         CountDownLatch countDownLatch = new CountDownLatch(3);
 
-        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+        ListenableFuture<Integer> work1Future = service.submit(new ComputeCallable());
+        ListenableFuture<Integer> work2Future = service.submit(new ComputeCallable());
 
-        ListenableFuture<Integer> explosion1 = service.submit(new ComputeCallable());
-        ListenableFuture<Integer> explosion2 = service.submit(new ComputeCallable());
+        ListenableFuture<List<Integer>> composeFutures = Futures.allAsList(Arrays.asList(work1Future, work2Future));
 
-        ListenableFuture<Long> longexplosion1 = Futures.transformAsync(explosion1, new AsyncFunction<Integer, Long>() {
+        Futures.addCallback(composeFutures, new FutureCallback<List<Integer>>() {
             @Override
-            public ListenableFuture<Long> apply(@Nullable Integer input) throws Exception {
-                return service.submit(new Callable<Long>() {
-                    @Override
-                    public Long call() throws Exception {
-                        long result = 0;
-                        for (Integer i = 0; i < input; i++) {
-                            result += i;
-                        }
-                        return result;
-                    }
+            public void onSuccess(@Nullable List<Integer> result) {
+                assert result != null;
+                result.forEach(System.out::println);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                throw new RuntimeException(t);
+            }
+        }, service);
+
+
+        // 返回一个新的 ListenableFuture，其结果是将给定的 AsyncFunction 应用于给定的 ListenableFuture 的结果
+        ListenableFuture<Integer> queueWork1Future = Futures.transformAsync(work1Future, new AsyncFunction<Integer, Integer>() {
+            @Override
+            public ListenableFuture<Integer> apply(@Nullable Integer input) throws Exception {
+                return service.submit(() -> {
+                    System.out.println(input + 1);
+                    return input + 1;
                 });
             }
         }, service);
 
-        Futures.addCallback(longexplosion1, new FutureCallback<Long>() {
+        Futures.addCallback(queueWork1Future, new FutureCallback<Integer>() {
             @Override
-            public void onSuccess(@Nullable Long result) {
+            public void onSuccess(@Nullable Integer result) {
                 try {
                     System.out.println(Thread.currentThread().getName());
-                    resultMap.put(Thread.currentThread().getName(), result.intValue());
+                    assert result != null;
+                    resultMap.put(Thread.currentThread().getName(), result);
                 } finally {
                     countDownLatch.countDown();
                 }
@@ -64,7 +81,7 @@ public class ListenableFutureDemo1 {
             }
         }, service);
 
-        Futures.addCallback(explosion1, new FutureCallback<Integer>() {
+        Futures.addCallback(work1Future, new FutureCallback<Integer>() {
             @Override
             public void onSuccess(@Nullable Integer result) {
                 try {
@@ -85,7 +102,7 @@ public class ListenableFutureDemo1 {
             }
         }, service);
 
-        Futures.addCallback(explosion2, new FutureCallback<Integer>() {
+        Futures.addCallback(work2Future, new FutureCallback<Integer>() {
             @Override
             public void onSuccess(@Nullable Integer result) {
                 try {
@@ -107,9 +124,7 @@ public class ListenableFutureDemo1 {
         }, service);
 
         countDownLatch.await();
-        resultMap.forEach((key, value) -> {
-            System.out.println(key + " : " + value);
-        });
+        resultMap.forEach((key, value) -> System.out.println(key + " : " + value));
 
         stopWatch.stop();
         System.out.println(stopWatch.getTime(TimeUnit.MILLISECONDS));

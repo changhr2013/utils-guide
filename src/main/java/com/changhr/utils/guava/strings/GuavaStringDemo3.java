@@ -5,6 +5,7 @@ import com.google.common.base.Joiner;
 import java.util.Arrays;
 
 /**
+ * 字符串插入器
  * @author changhr
  * @create 2019-07-30 14:19
  */

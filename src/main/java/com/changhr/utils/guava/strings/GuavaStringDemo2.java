@@ -5,7 +5,7 @@ import com.google.common.base.CharMatcher;
 import java.util.UUID;
 
 /**
- * 字符串大格式转换
+ * 字符匹配器
  * @author changhr
  * @create 2019-07-30 10:37
  */

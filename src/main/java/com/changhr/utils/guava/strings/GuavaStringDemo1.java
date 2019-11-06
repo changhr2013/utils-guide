@@ -3,7 +3,7 @@ package com.changhr.utils.guava.strings;
 import com.google.common.base.CaseFormat;
 
 /**
- * 字符串大格式转换
+ * 字符串大小写格式转换
  * @author changhr
  * @create 2019-07-30 10:37
  */
