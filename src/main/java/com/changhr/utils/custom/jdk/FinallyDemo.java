@@ -1,4 +1,4 @@
-package com.changhr.utils.guava.concurrency;
+package com.changhr.utils.custom.jdk;
 
 import com.google.common.collect.Maps;
 
@@ -8,7 +8,7 @@ import java.util.Map;
  * @author changhr
  * @create 2019-08-02 16:17
  */
-public class Demo {
+public class FinallyDemo {
 
     public static void main(String[] args) {
         System.out.println(test());

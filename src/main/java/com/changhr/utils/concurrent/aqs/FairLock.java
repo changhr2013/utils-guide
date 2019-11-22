@@ -1,4 +1,4 @@
-package com.changhr.utils.concurrent;
+package com.changhr.utils.concurrent.aqs;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
