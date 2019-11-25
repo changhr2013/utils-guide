@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 在xml中描述类与类的配置信息 -->
+    <bean id="person" class="com.changhr.utils.spring.advance.xml.Person">
+        <!-- property标签表示，让Spring通过setter方法注入-->
+        <property name="car" ref="car"></property>
+    </bean>
+
+
+    <bean id="car" class="com.changhr.utils.spring.advance.xml.Car"></bean>
+</beans>
