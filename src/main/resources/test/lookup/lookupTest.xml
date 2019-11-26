@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="getBeanTest" class="com.changhr.utils.spring.lookupmethod.GetBeanTest">
+        <lookup-method name="getBean" bean="student"></lookup-method>
+    </bean>
+
+    <bean id="teacher" class="com.changhr.utils.spring.lookupmethod.Teacher" />
+    <bean id="student" class="com.changhr.utils.spring.lookupmethod.Student" />
+
+</beans>
