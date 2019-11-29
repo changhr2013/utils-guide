@@ -14,5 +14,4 @@ public class Test {
         Person person = context.getBean(Person.class);
         System.out.println(person);
     }
-
 }

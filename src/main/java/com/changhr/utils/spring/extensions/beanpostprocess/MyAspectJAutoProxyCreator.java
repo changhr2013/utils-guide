@@ -10,12 +10,12 @@ import java.lang.reflect.Proxy;
  * @author changhr
  * @create 2019-11-25 9:56
  */
-//@Component
+@Component
 public class MyAspectJAutoProxyCreator implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
-        System.out.println("[MyAspectJAutoProxyCreator] postProcessBeforeInitialization");
+        System.out.println("\n[MyAspectJAutoProxyCreator][postProcessBeforeInitialization]");
         System.out.println(o);
         System.out.println(o.getClass());
         return o;
@@ -23,8 +23,9 @@ public class MyAspectJAutoProxyCreator implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
-        System.out.println("[MyAspectJAutoProxyCreator] postProcessAfterInitialization");
+        System.out.println("[MyAspectJAutoProxyCreator][postProcessAfterInitialization]\n");
         final Object bean = o;
+        System.out.println(o.getClass());
 
         if (bean instanceof Calculator) {
             return Proxy.newProxyInstance(

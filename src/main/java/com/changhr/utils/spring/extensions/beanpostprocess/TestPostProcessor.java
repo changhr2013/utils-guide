@@ -13,15 +13,16 @@ public class TestPostProcessor {
         System.out.println("容器启动成功");
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        String[] beanDefinitionNames = context.getBeanDefinitionNames();
-        for (String beanDefinitionName : beanDefinitionNames) {
-            System.out.println(beanDefinitionName);
-        }
+//        String[] beanDefinitionNames = context.getBeanDefinitionNames();
+//        for (String beanDefinitionName : beanDefinitionNames) {
+//            System.out.println(beanDefinitionName);
+//        }
 
         System.out.println("================");
 
         Calculator bean = context.getBean(Calculator.class);
-        System.out.println(bean.getClass());
         bean.add(1, 2);
+
+        context.destroy();
     }
 }

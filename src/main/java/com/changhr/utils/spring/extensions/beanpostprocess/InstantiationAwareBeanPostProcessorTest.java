@@ -3,6 +3,7 @@ package com.changhr.utils.spring.extensions.beanpostprocess;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 import org.springframework.stereotype.Component;
 
 import java.beans.PropertyDescriptor;
@@ -12,8 +13,8 @@ import java.util.Arrays;
  * @author changhr
  * @create 2019-11-25 16:39
  */
-//@Component
-public class InstantiationAwareBeanPostProcessorTest implements InstantiationAwareBeanPostProcessor {
+@Component
+public class InstantiationAwareBeanPostProcessorTest extends InstantiationAwareBeanPostProcessorAdapter {
 
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
@@ -33,17 +34,5 @@ public class InstantiationAwareBeanPostProcessorTest implements InstantiationAwa
         System.out.println("[InstantiationAwareBeanPostProcessor][postProcessPropertyValues] pds: " + Arrays.toString(propertyDescriptors));
         System.out.println("[InstantiationAwareBeanPostProcessor][postProcessPropertyValues] beanName: " + beanName);
         return propertyValues;
-    }
-
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("[InstantiationAwareBeanPostProcessor][postProcessBeforeInitialization] before 初始化：" + beanName);
-        return bean;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("[InstantiationAwareBeanPostProcessor][postProcessAfterInitialization] after 初始化：" + beanName);
-        return bean;
     }
 }

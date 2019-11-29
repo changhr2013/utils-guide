@@ -24,11 +24,11 @@ public class BeanFactoryPostProcessorTest implements BeanFactoryPostProcessor {
      */
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
-        BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("oneBean");
+        BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("calculatorImpl");
         MutablePropertyValues beanProperty = beanDefinition.getPropertyValues();
         System.out.println("scope before change: " + beanDefinition.getScope());
         beanDefinition.setScope("singleton");
-        System.out.println("scope before change: " + beanDefinition.getScope());
+        System.out.println("scope after change: " + beanDefinition.getScope());
         System.out.println("beanProperty: " + beanProperty);
     }
 }

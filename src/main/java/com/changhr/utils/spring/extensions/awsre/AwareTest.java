@@ -1,11 +1,10 @@
 package com.changhr.utils.spring.extensions.awsre;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +12,9 @@ import org.springframework.stereotype.Component;
  * @author changhr
  * @create 2019-11-25 17:31
  */
-@Component
-public class AwareTest implements BeanNameAware, ApplicationContextAware, BeanFactoryAware {
+//@Component
+//@Scope("prototype")
+public class AwareTest implements BeanNameAware, ApplicationContextAware, BeanFactoryAware, InitializingBean, DisposableBean {
 
     private BeanFactory beanFactory;
 
@@ -23,17 +23,27 @@ public class AwareTest implements BeanNameAware, ApplicationContextAware, BeanFa
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
-        System.out.println("[BeanFactoryAware][setBeanFactory] " + beanFactory);
+        System.out.println("[AwareTest][BeanFactoryAware][setBeanFactory] " + beanFactory);
     }
 
     @Override
     public void setBeanName(String beanName) {
-        System.out.println("[BeanNameAware][setBeanName] " + beanName);
+        System.out.println("[AwareTest][BeanNameAware][setBeanName] " + beanName);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        System.out.println("[ApplicationContextAware][setApplicationContext] " + applicationContext);
+        System.out.println("[AwareTest][ApplicationContextAware][setApplicationContext] " + applicationContext);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("[AwareTest][DisposableBean][destroy]");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("[AwareTest][InitializingBean][afterPropertiesSet]");
     }
 }

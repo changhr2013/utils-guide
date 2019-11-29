@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
  * @author changhr
  * @create 2019-11-25 17:49
  */
-@Component
-@Scope("prototype")
+//@Component
+//@Scope("prototype")
 public class OneBean implements InitializingBean, DisposableBean {
     private String name;
     private String message;
