@@ -5,6 +5,8 @@ import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,6 +27,9 @@ public class BeanFactoryPostProcessorTest implements BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("calculatorImpl");
+
+        BeanDefinitionRegistry registry = (BeanDefinitionRegistry) configurableListableBeanFactory;
+        GenericBeanDefinition genericBean = new GenericBeanDefinition();
         MutablePropertyValues beanProperty = beanDefinition.getPropertyValues();
         System.out.println("scope before change: " + beanDefinition.getScope());
         beanDefinition.setScope("singleton");
